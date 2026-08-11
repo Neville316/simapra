@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne; 
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Traits\LogsActivity;
+
 class PengajuanPkl extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
 
     protected $table = 'pengajuan_pkl';
 

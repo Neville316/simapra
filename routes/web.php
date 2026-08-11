@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
         return redirect()->back();
     })->name('notifications.read');
   
+    // Route Activity Log
+    Route::get('/activity-log', [App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity-log.index');
     
     // Khusus Admin
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {

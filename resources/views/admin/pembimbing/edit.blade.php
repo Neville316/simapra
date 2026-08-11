@@ -4,53 +4,104 @@
 @section('header_title', 'Edit Data Pembimbing')
 
 @section('content')
-<div class="card">
-    @if ($errors->any())
-        <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
-            <ul>@foreach ($errors->all() as $error) <li>{{ $error }}</li> @endforeach</ul>
+<div class="max-w-3xl mx-auto">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Edit Pembimbing</h2>
+            <span class="text-xs text-gray-400">* wajib diisi</span>
         </div>
-    @endif
 
-    <form action="{{ route('admin.pembimbing.update', $pembimbing) }}" method="POST">
-        @csrf @method('PUT')
-        <div class="grid grid-cols-2 gap-4">
-            <div class="mb-4 col-span-2">
-                <label class="block text-sm font-bold mb-2">Nama Lengkap *</label>
-                <input type="text" name="name" value="{{ old('name', $pembimbing->user->name) }}" class="form-input" required>
-            </div>
-            <div class="mb-4">
-                <label class="block text-sm font-bold mb-2">Instansi *</label>
-                <select name="instansi_id" class="form-input" required>
-                    @foreach($instansi as $i)
-                    <option value="{{ $i->id }}" @if(old('instansi_id', $pembimbing->instansi_id) == $i->id) selected @endif>{{ $i->nama_instansi }}</option>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="list-disc list-inside text-sm">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
                     @endforeach
-                </select>
+                </ul>
             </div>
-            <div class="mb-4">
-                <label class="block text-sm font-bold mb-2">Jabatan</label>
-                <input type="text" name="jabatan" value="{{ old('jabatan', $pembimbing->jabatan) }}" class="form-input">
+        @endif
+
+        <form action="{{ route('admin.pembimbing.update', $pembimbing) }}" method="POST">
+            @csrf
+            @method('PUT')
+            
+            <div class="mb-5">
+                <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
+                <input type="text" name="name" class="form-input" placeholder="Masukkan nama lengkap pembimbing..." value="{{ old('name', $pembimbing->user->name) }}" required autofocus>
+                @error('name')
+                    <p class="form-error">{{ $message }}</p>
+                @enderror
             </div>
-            <div class="mb-4">
-                <label class="block text-sm font-bold mb-2">NIP</label>
-                <input type="text" name="nip" value="{{ old('nip', $pembimbing->nip) }}" class="form-input">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="mb-5 md:mb-0">
+                    <label class="form-label">Instansi <span class="text-danger">*</span></label>
+                    <select name="instansi_id" class="form-input" required>
+                        @foreach($instansi as $i)
+                            <option value="{{ $i->id }}" @if(old('instansi_id', $pembimbing->instansi_id) == $i->id) selected @endif>{{ $i->nama_instansi }}</option>
+                        @endforeach
+                    </select>
+                    @error('instansi_id')
+                        <p class="form-error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-5 md:mb-0">
+                    <label class="form-label">Jabatan</label>
+                    <input type="text" name="jabatan" class="form-input" placeholder="Masukkan jabatan..." value="{{ old('jabatan', $pembimbing->jabatan) }}">
+                    @error('jabatan')
+                        <p class="form-error">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
-            <div class="mb-4">
-                <label class="block text-sm font-bold mb-2">Email *</label>
-                <input type="email" name="email" value="{{ old('email', $pembimbing->user->email) }}" class="form-input" required>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="mb-5 md:mb-0">
+                    <label class="form-label">NIP</label>
+                    <input type="text" name="nip" class="form-input" placeholder="Masukkan NIP..." value="{{ old('nip', $pembimbing->nip) }}">
+                    @error('nip')
+                        <p class="form-error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-5 md:mb-0">
+                    <label class="form-label">Email <span class="text-danger">*</span></label>
+                    <input type="email" name="email" class="form-input" placeholder="Masukkan email..." value="{{ old('email', $pembimbing->user->email) }}" required>
+                    @error('email')
+                        <p class="form-error">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
-            <div class="mb-4">
-                <label class="block text-sm font-bold mb-2">Username *</label>
-                <input type="text" name="username" value="{{ old('username', $pembimbing->user->username) }}" class="form-input" required>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="mb-5 md:mb-0">
+                    <label class="form-label">Username <span class="text-danger">*</span></label>
+                    <input type="text" name="username" class="form-input" placeholder="Masukkan username..." value="{{ old('username', $pembimbing->user->username) }}" required>
+                    @error('username')
+                        <p class="form-error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-5 md:mb-0">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-input" placeholder="Kosongkan jika tidak diubah">
+                    <p class="text-xs text-gray-400 mt-1">* Kosongkan jika tidak ingin mengubah password</p>
+                    @error('password')
+                        <p class="form-error">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
-            <div class="mb-4 col-span-2">
-                <label class="block text-sm font-bold mb-2">Password (Kosongkan jika tidak diubah)</label>
-                <input type="password" name="password" class="form-input">
+
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-gray-100">
+                <a href="{{ route('admin.pembimbing.index') }}" class="btn-secondary">
+                    Batal
+                </a>
+                <button type="submit" class="btn-primary">
+                    <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v6h6m10 10v-6h-6M4 20l6-6m10-6l-6 6"/></svg>
+                    Update Pembimbing
+                </button>
             </div>
-        </div>
-        <div class="flex justify-end">
-            <a href="{{ route('admin.pembimbing.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2">Batal</a>
-            <button type="submit" class="btn-primary">Update</button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
 @endsection

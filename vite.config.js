@@ -10,4 +10,21 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    server: {
+        host: true,
+        port: 5173,
+        hmr: {
+            host: 'localhost',
+        },
+    },
+    build: {
+        manifest: true,
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vendor: ['alpinejs', 'axios'],
+                },
+            },
+        },
+    },
 });

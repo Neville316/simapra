@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+use App\Traits\LogsActivity;
+
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, LogsActivity;
 
     protected $fillable = ['role_id', 'name', 'username', 'email', 'password', 'phone', 'status'];
 
@@ -43,4 +45,20 @@ class User extends Authenticatable
     public function isAdmin(): bool { return $this->role->name === 'admin'; }
     public function isMahasiswa(): bool { return $this->role->name === 'mahasiswa'; }
     public function isPembimbing(): bool { return $this->role->name === 'pembimbing'; }
+
+    public function activityLogs()
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
+
+    public function logActivity($action, $description = null, $model = null, $properties = null)
+    {
+        $this->activityLogs()->create([
+            'action' => $action,
+            'description' => $description,
+            'model_type' => $model ? get_class($model) : null,
+            'model_id' => $model ? $model->id : null,
+            'properties' => $properties,
+        ]);
+    }
 }

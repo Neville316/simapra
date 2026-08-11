@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+use App\Traits\LogsActivity;
+
 class Mahasiswa extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
     protected $table = 'mahasiswa';
     protected $fillable = ['user_id', 'nim', 'program_studi', 'angkatan'];
 
